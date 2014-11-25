@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"strings"
 	"time"
 )
 
@@ -42,8 +43,10 @@ func New(cert_filename, key_filename, server string, timeout time.Duration) (*Ap
 	}
 
 	certificate := []tls.Certificate{cert}
+	gatewayParts := strings.Split(server, ":")
 	conf := &tls.Config{
 		Certificates: certificate,
+		ServerName:   gatewayParts[0],
 	}
 
 	ret := &Apn{
